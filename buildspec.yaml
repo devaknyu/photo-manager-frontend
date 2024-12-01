@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16  # Ensure the Node.js version matches your environment
+    commands:
+      - echo Installing dependencies...
+      - npm install
+  build:
+    commands:
+      - echo Build step running...
+      - mkdir dist
+      - cp -R frontend/* dist/
+artifacts:
+  files:
+    - dist/**      # Include all frontend source code in the build artifact
+    - frontends-stack.yaml # Include the CloudFormation stack
+    - buildspec.yaml # Include the buildspec for tracking purposes
