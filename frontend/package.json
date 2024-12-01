@@ -1,0 +1,15 @@
+{
+  "name": "photo-manager-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Photo Manager Application",
+  "main": "app.js",
+  "scripts": {
+    "start": "live-server frontend",  
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "live-server": "^1.2.1"  
+  }
+}
