@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    input[type="text"], input[type="file"] {
+      padding: 8px;
+      font-size: 16px;
+      width: 300px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #results {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; 
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      overflow: visible;
+    }
+    .search-result-image {
+      width: auto !important;
+      height: auto !important;
+      max-width: none !important;
+      max-height: none !important;
+      display: block !important;
+            
+    }
+  </style>
+</head>
+<body>
+  <h1>Photo Upload and Search</h1>
+
+  <!-- Upload Form -->
+  <h2>Upload Image with Labels</h2>
+  <input type="file" id="fileInput" />
+  <input type="text" id="customLabelsInput" placeholder="Enter custom labels (comma-separated)" />
+  <button onclick="uploadImage()">Upload Image</button>
+
+  <h2>Search for Images</h2>
+  <input type="text" id="searchInput" placeholder="Search by labels (e.g., dog, cat)" />
+  <button onclick="searchImages()">Search</button>
+
+  <div id="results"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
