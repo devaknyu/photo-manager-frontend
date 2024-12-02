@@ -4,6 +4,7 @@ phases:
   install:
     commands:
       - echo Installing dependencies...
+      - cd frontend
       - npm install
   build:
     commands:
@@ -15,5 +16,5 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
+    - frontend/**/* 
   base-directory: 'dist'   # or the directory where your build output is located
