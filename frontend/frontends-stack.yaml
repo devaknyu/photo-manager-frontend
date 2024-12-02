@@ -26,6 +26,9 @@ Resources:
               - GET
               - HEAD
               - OPTIONS
+            CachedMethods: 
+              - GET
+              - HEAD
         DefaultRootObject: 'index.html'
         PriceClass: 'PriceClass_100'
 
