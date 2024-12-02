@@ -16,5 +16,4 @@ phases:
 
 artifacts:
   files:
-    - frontend/**/* 
-  base-directory: 'dist'   # or the directory where your build output is located
+    - frontend/**/*
