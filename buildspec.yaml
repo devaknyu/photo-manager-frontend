@@ -2,18 +2,21 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 16
     commands:
-      - echo Installing dependencies...
+      - echo "Installing dependencies..."
       - cd frontend
       - npm install
   build:
     commands:
-      - echo Building the project...
-      - npm run build   # Make sure this is the correct build command for your project
+      - echo "Building the project..."
+      - npm run build
   post_build:
     commands:
-      - echo Build completed
+      - echo "Build completed."
 
 artifacts:
   files:
-    - frontend/**/*
+    - dist/**               # Include all files in the dist folder
+    - frontends-stack.yaml  # Include the CloudFormation template
