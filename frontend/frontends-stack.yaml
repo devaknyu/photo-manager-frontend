@@ -1,38 +1,25 @@
-AWSTemplateFormatVersion: '2010-09-09'
 Resources:
-  FrontendBucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: !Sub 'photo-manager-frontend-${AWS::AccountId}'
-      WebsiteConfiguration:
-        IndexDocument: 'index.html'
-        ErrorDocument: 'error.html'
-
   FrontendCloudFront:
-    Type: 'AWS::CloudFront::Distribution'
+    Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        Origins:
-          - Id: 'S3-FrontendBucket'
-            DomainName: !GetAtt FrontendBucket.DomainName
-            S3OriginConfig: {}
-        Enabled: 'true'
         DefaultCacheBehavior:
-          TargetOriginId: 'S3-FrontendBucket'
-          ViewerProtocolPolicy: 'redirect-to-https'
-          AllowedMethods:
-            Quantity: '2'
-            Items:
-              - GET
-              - HEAD
-              - OPTIONS
-            CachedMethods: 
-              - GET
-              - HEAD
-        DefaultRootObject: 'index.html'
-        PriceClass: 'PriceClass_100'
-
-Outputs:
-  WebsiteURL:
-    Value: !Sub 'http://${FrontendBucket}.s3-website-${AWS::Region}.amazonaws.com'
-    Description: 'URL of the static website'
+          TargetOriginId: "MyS3Origin"
+          ViewerProtocolPolicy: "redirect-to-https"
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods: 
+            - GET
+            - HEAD
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: "none"
+        Origins:
+          - Id: "MyS3Origin"
+            DomainName: !Sub "${FrontendBucket}.s3.amazonaws.com"
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${FrontendBucketOAI}"
+        Enabled: true
