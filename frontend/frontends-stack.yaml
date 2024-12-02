@@ -1,25 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Frontend Infrastructure Stack for Photo Manager Application
+
 Resources:
+  # S3 Bucket for Hosting Frontend
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-frontend-bucket"
+      AccessControl: Private
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      Tags:
+        - Key: Project
+          Value: PhotoManager
+
+  # CloudFront Origin Access Identity
+  FrontendBucketOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "${AWS::StackName} Origin Access Identity"
+
+  # Bucket Policy to Allow CloudFront Access
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${FrontendBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/*"
+
+  # CloudFront Distribution
   FrontendCloudFront:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        Origins:
+          - Id: FrontendBucketOrigin
+            DomainName: !GetAtt FrontendBucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${FrontendBucketOAI}"
         DefaultCacheBehavior:
-          TargetOriginId: "MyS3Origin"
-          ViewerProtocolPolicy: "redirect-to-https"
+          TargetOriginId: FrontendBucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
           AllowedMethods: 
             - GET
             - HEAD
-            - OPTIONS
-          CachedMethods: 
+          CachedMethods:
             - GET
             - HEAD
           ForwardedValues:
             QueryString: false
             Cookies:
-              Forward: "none"
-        Origins:
-          - Id: "MyS3Origin"
-            DomainName: !Sub "${FrontendBucket}.s3.amazonaws.com"
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${FrontendBucketOAI}"
-        Enabled: true
+              Forward: none
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        PriceClass: PriceClass_100
+
+Outputs:
+  CloudFrontURL:
+    Description: URL for the CloudFront Distribution
+    Value: !Sub "https://${FrontendCloudFront.DomainName}"
+  BucketName:
+    Description: Name of the S3 bucket for the frontend
+    Value: !Ref FrontendBucket
