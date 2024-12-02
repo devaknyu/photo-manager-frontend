@@ -4,18 +4,19 @@ phases:
   install:
     commands:
       - echo Installing dependencies...
-      - cd frontend
-      - npm install   # Install dependencies in the frontend folder
+      - cd frontend        # Navigate into the frontend folder once
+      - npm install        # Install dependencies in the frontend folder
+
   build:
     commands:
       - echo Building the frontend...
-      - cd frontend
-      - npm run build  # Build the project in the frontend folder
+      - npm run build      # Build the project in the frontend folder (no need to cd again)
+
   post_build:
     commands:
       - echo Build completed
 
 artifacts:
   files:
-    - frontend/dist/**/*  # Include all files in dist folder inside frontend
-    - frontend/frontends-stack.yaml  # Include the CloudFormation stack
+    - frontend/dist/**/*  # Include all files from the dist folder inside frontend
+    - frontend/frontends-stack.yaml  # Include the CloudFormation stack file
