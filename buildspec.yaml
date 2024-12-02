@@ -4,18 +4,18 @@ phases:
   install:
     commands:
       - echo Installing dependencies...
-      - cd frontend  # Move into the frontend directory
-      - npm install  # Install dependencies
+      - cd frontend
+      - npm install   # Install dependencies in the frontend folder
   build:
     commands:
-      - echo Building the application...
-      - npm run build  # Run the Webpack build process
+      - echo Building the frontend...
+      - cd frontend
+      - npm run build  # Build the project in the frontend folder
   post_build:
     commands:
-      - echo Build completed.
+      - echo Build completed
+
 artifacts:
   files:
-    - frontend/dist/**  # Include all files from the dist/ directory within frontend
-    - frontends-stack.yaml  # Include CloudFormation template from the root
-  discard-paths: no
-  base-directory: frontend/dist  # Specify the base directory for artifacts
+    - frontend/dist/**/*  # Include all files in dist folder inside frontend
+    - frontend/frontends-stack.yaml  # Include the CloudFormation stack
