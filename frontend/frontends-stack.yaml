@@ -23,8 +23,9 @@ Resources:
           AllowedMethods:
             Quantity: '2'
             Items:
-              - 'GET'
-              - 'HEAD'
+              - GET
+              - HEAD
+              - OPTIONS
         DefaultRootObject: 'index.html'
         PriceClass: 'PriceClass_100'
 
